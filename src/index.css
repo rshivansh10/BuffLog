@@ -1,0 +1,274 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Archivo+Black&display=swap");
+
+:root {
+  --white: #ffffff;
+  --paper: #fffdfd;
+  --ink: #17181b;
+  --red: #d32020;
+  --red-soft: #f6d3d3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: "Outfit", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 10% 8%, #ffe9e9 0, transparent 35%),
+    radial-gradient(circle at 85% 92%, #fff0f0 0, transparent 44%),
+    var(--white);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 1.4rem 2.2rem 4rem;
+}
+
+.topbar {
+  width: min(1320px, 97vw);
+  margin: 0 auto 1.4rem;
+  border: 2px solid var(--red);
+  border-radius: 28px;
+  padding: 0.85rem 1.15rem;
+  background: var(--paper);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.brand p {
+  margin: 0;
+  font-family: "Archivo Black", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.brand-link {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.brand-link:hover {
+  background: transparent;
+}
+
+.brand span {
+  font-size: 0.86rem;
+  color: #686868;
+}
+
+.userbox {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.page {
+  width: min(1320px, 97vw);
+  margin: 0 auto;
+}
+
+.canvas {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.canvas.narrow {
+  max-width: 640px;
+}
+
+.hero {
+  border: 2px solid var(--red);
+  border-radius: 34px;
+  padding: clamp(1.3rem, 2.8vw, 2.8rem);
+  background: linear-gradient(120deg, #ffffff 0%, #fff6f6 100%);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: "Archivo Black", sans-serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.07;
+}
+
+.hero p {
+  margin: 0.8rem 0 0;
+}
+
+.hero-points {
+  margin-top: 1rem;
+  border: 1px dashed var(--red-soft);
+  border-radius: 15px;
+  padding: 0.8rem;
+}
+
+.hero-points p {
+  margin: 0.28rem 0;
+}
+
+.avatar-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-wrap img {
+  width: min(520px, 100%);
+  height: auto;
+  filter: drop-shadow(0 10px 22px rgba(211, 32, 32, 0.16));
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.outline-card {
+  border: 2px solid var(--red);
+  border-radius: 24px;
+  padding: 1rem;
+  background: var(--paper);
+}
+
+.outline-card h2 {
+  margin: 0 0 0.45rem;
+}
+
+.form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.toggle-row {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+
+.stack {
+  display: grid;
+  gap: 0.5rem;
+  border: 1px dashed var(--red-soft);
+  border-radius: 14px;
+  padding: 0.6rem;
+}
+
+.set-row {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.set-row.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.set-row.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.7rem;
+}
+
+.plan-card {
+  border: 1.5px solid #efb7b7;
+  border-radius: 14px;
+  padding: 0.7rem;
+  background: #fff;
+}
+
+.history {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.7rem;
+}
+
+.history-card {
+  border: 1.5px solid #efb7b7;
+  border-radius: 14px;
+  padding: 0.7rem;
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: 0.97rem;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1.7px solid #efc2c2;
+  border-radius: 12px;
+  background: #fff;
+  padding: 0.56rem 0.62rem;
+}
+
+button {
+  border: 2px solid var(--red);
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  background: #fff;
+}
+
+button:hover {
+  background: #fff3f3;
+}
+
+.active-pill {
+  background: #fff2f2;
+}
+
+.error {
+  margin: 0;
+  color: #b41212;
+}
+
+.status {
+  margin: 0;
+  color: #575757;
+}
+
+@media (max-width: 920px) {
+  .app {
+    padding: 1rem;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .set-row.two,
+  .set-row.three {
+    grid-template-columns: 1fr;
+  }
+}
