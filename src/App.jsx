@@ -127,16 +127,27 @@ function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <button type="button" className="brand brand-link" onClick={() => navigate("/")}>
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          type="button"
+          className="brand brand-link"
+          onClick={() => navigate("/")}
+        >
           <p>BulkLog</p>
           <span>Track Strength. Track Cardio. Build Better.</span>
-        </button>
+        </motion.button>
         <div className="userbox">
-          {user ? <span>{user.name}</span> : <span>Guest</span>}
+          {user ? <span>{user.name}</span> : null}
           {user ? (
-            <button type="button" onClick={logout}>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="button"
+              onClick={logout}
+            >
               Logout
-            </button>
+            </motion.button>
           ) : null}
         </div>
       </header>
@@ -253,14 +264,23 @@ function LandingAuth({ onAuthSuccess, isLoggedIn, goTracker }) {
       </section>
 
       <section className="split">
-        <article className="outline-card">
+        <motion.article
+          className="outline-card"
+          whileHover={{ y: -5 }}
+          transition={{ duration: 0.3 }}
+        >
           <h2>Get Started or Login</h2>
           {isLoggedIn ? (
             <div className="form">
               <p>You are signed in.</p>
-              <button type="button" onClick={goTracker}>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="button"
+                onClick={goTracker}
+              >
                 Go to Tracker
-              </button>
+              </motion.button>
             </div>
           ) : (
             <>
@@ -311,26 +331,35 @@ function LandingAuth({ onAuthSuccess, isLoggedIn, goTracker }) {
                     required
                   />
                 </label>
-                <button type="submit" disabled={submitting}>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  disabled={submitting}
+                >
                   {submitting
                     ? "Submitting..."
                     : mode === "register"
-                    ? "Create Account"
-                    : "Login"}
-                </button>
+                      ? "Create Account"
+                      : "Login"}
+                </motion.button>
                 {error ? <p className="error">{error}</p> : null}
               </form>
             </>
           )}
-        </article>
+        </motion.article>
 
-        <article className="outline-card">
+        <motion.article
+          className="outline-card"
+          whileHover={{ y: -5 }}
+          transition={{ duration: 0.3 }}
+        >
           <h2>How BulkLog works</h2>
           <p>
             Register once, complete your profile on first login, then track training sessions.
             Every save writes directly to your SQL-backed account history.
           </p>
-        </article>
+        </motion.article>
       </section>
     </section>
   );
@@ -367,7 +396,12 @@ function Onboarding({ token, onComplete }) {
 
   return (
     <section className="canvas narrow">
-      <article className="outline-card">
+      <motion.article
+        className="outline-card"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
         <h2>First Login Profile Setup</h2>
         <p>Enter your current body stats to unlock your initial six-day split suggestion.</p>
         <form className="form" onSubmit={submit}>
@@ -415,12 +449,17 @@ function Onboarding({ token, onComplete }) {
               required
             />
           </label>
-          <button type="submit" disabled={submitting}>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type="submit"
+            disabled={submitting}
+          >
             {submitting ? "Saving..." : "Save and Continue"}
-          </button>
+          </motion.button>
           {error ? <p className="error">{error}</p> : null}
         </form>
-      </article>
+      </motion.article>
     </section>
   );
 }
@@ -501,19 +540,29 @@ function Tracker({ token, user, loadingUser }) {
 
   return (
     <section className="canvas">
-      <article className="outline-card">
+      <motion.article
+        className="outline-card"
+        whileHover={{ y: -5 }}
+        transition={{ duration: 0.3 }}
+      >
         <h2>Suggested 6-Day Workout Plan</h2>
         <div className="plan-grid">
-          {sixDayPlan.map((item) => (
-            <div key={item.day} className="plan-card">
-              <strong>
+          {sixDayPlan.map((item, index) => (
+            <motion.div
+              key={item.day}
+              className="plan-card"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.05 + 0.1 }}
+            >
+              <strong className="red-accent">
                 {item.day}: {item.focus}
               </strong>
               <p>{item.exercises.join(" - ")}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </article>
+      </motion.article>
 
       <form className="outline-card form" onSubmit={submitWorkout}>
         <h2>Log Exercises</h2>
@@ -599,7 +648,9 @@ function Tracker({ token, user, loadingUser }) {
               </div>
             )}
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02, backgroundColor: "var(--red-soft)", color: "var(--red)" }}
+              whileTap={{ scale: 0.98 }}
               type="button"
               onClick={() =>
                 setEntries((prev) => prev.filter((_, entryIndex) => entryIndex !== index))
@@ -607,43 +658,64 @@ function Tracker({ token, user, loadingUser }) {
               disabled={entries.length === 1}
             >
               Remove Entry
-            </button>
+            </motion.button>
           </div>
         ))}
 
-        <button type="button" onClick={() => setEntries((prev) => [...prev, createLogEntry()])}>
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          type="button"
+          onClick={() => setEntries((prev) => [...prev, createLogEntry()])}
+        >
           Add Exercise Entry
-        </button>
+        </motion.button>
 
         <label>
           Notes
           <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={4} />
         </label>
 
-        <button type="submit" disabled={saving}>
+        <motion.button
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="brand-filled"
+          type="submit"
+          disabled={saving}
+        >
           {saving ? "Saving..." : "Save Workout"}
-        </button>
+        </motion.button>
         {status ? <p className="status">{status}</p> : null}
       </form>
 
-      <article className="outline-card">
+      <motion.article
+        className="outline-card"
+        whileHover={{ y: -5 }}
+        transition={{ duration: 0.3 }}
+      >
         <h2>Saved Sessions</h2>
         <div className="history">
           {history.length ? (
-            history.map((workout) => (
-              <article className="history-card" key={workout.id}>
+            history.map((workout, index) => (
+              <motion.article
+                className="history-card"
+                key={workout.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+              >
                 <strong>{workout.workoutDate}</strong>
                 <p>{workout.notes || "No notes"}</p>
                 <small>
                   Strength rows: {workout.strength.length} | Cardio rows: {workout.cardio.length}
                 </small>
-              </article>
+              </motion.article>
             ))
           ) : (
             <p>No sessions yet.</p>
           )}
         </div>
-      </article>
+      </motion.article>
     </section>
   );
 }
