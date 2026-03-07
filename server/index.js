@@ -1,16 +1,19 @@
 import express from "express";
 import cors from "cors";
 import bcrypt from "bcryptjs";
+import { existsSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath, pathToFileURL } from "url";
 import { config } from "./config.js";
 import { pool } from "./db.js";
 import { createToken, requireAuth } from "./auth.js";
 import { initializeSchema } from "./schema.js";
 
-const app = express();
+export const app = express();
 
 app.use(
   cors({
-    origin: config.clientOrigin,
+    origin: [config.clientOrigin, "http://127.0.0.1:5173"],
   })
 );
 app.use(express.json());
@@ -260,15 +263,39 @@ app.get("/api/workouts", requireAuth, async (req, res) => {
   return res.json({ workouts });
 });
 
+const currentDir = dirname(fileURLToPath(import.meta.url));
+const distDir = join(currentDir, "..", "dist");
+const indexHtmlPath = join(distDir, "index.html");
+
+if (existsSync(indexHtmlPath)) {
+  app.use(express.static(distDir));
+  app.get(/^(?!\/api).*/, (_req, res) => {
+    res.sendFile(indexHtmlPath);
+  });
+}
+
+let schemaInitialization;
+
+export async function ensureSchemaInitialized() {
+  if (!schemaInitialization) {
+    schemaInitialization = initializeSchema();
+  }
+  return schemaInitialization;
+}
+
 async function start() {
-  await initializeSchema();
+  await ensureSchemaInitialized();
   app.listen(config.port, () => {
     console.log(`Server running on http://localhost:${config.port}`);
   });
 }
 
-start().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+const isDirectRun =
+  process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 
+if (isDirectRun) {
+  start().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}
