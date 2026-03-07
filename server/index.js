@@ -11,9 +11,25 @@ import { initializeSchema } from "./schema.js";
 
 export const app = express();
 
+const PROD_VERCEL_ORIGIN = "https://my-app.vercel.app";
+const VERCEL_PREVIEW_ORIGIN_REGEX = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i;
+const LOCAL_ORIGINS = new Set(["http://localhost:5173", "http://127.0.0.1:5173"]);
+
 app.use(
   cors({
-    origin: [config.clientOrigin, "http://127.0.0.1:5173"],
+    origin(origin, callback) {
+      // Allow non-browser or same-origin server-to-server requests.
+      if (!origin) return callback(null, true);
+
+      if (origin === PROD_VERCEL_ORIGIN) return callback(null, true);
+      if (VERCEL_PREVIEW_ORIGIN_REGEX.test(origin)) return callback(null, true);
+      if (origin === config.clientOrigin || LOCAL_ORIGINS.has(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
   })
 );
 app.use(express.json());
