@@ -9,17 +9,9 @@ async function request(path, options = {}) {
     },
   });
 
-  const rawBody = await response.text();
-  let data = {};
-  if (rawBody) {
-    try {
-      data = JSON.parse(rawBody);
-    } catch {
-      data = { message: rawBody };
-    }
-  }
+  const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(data.message || `Request failed (${response.status}).`);
+    throw new Error(data.message || "Request failed.");
   }
   return data;
 }
