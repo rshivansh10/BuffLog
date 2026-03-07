@@ -13,10 +13,32 @@ export const app = express();
 
 app.use(
   cors({
-    origin: [config.clientOrigin, "http://127.0.0.1:5173"],
+    origin(origin, callback) {
+      // Allow server-to-server calls and same-origin browser calls.
+      if (!origin) return callback(null, true);
+
+      if (origin === config.clientOrigin || origin === "http://127.0.0.1:5173") {
+        return callback(null, true);
+      }
+
+      // Allow Vercel preview + production domains.
+      if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS origin not allowed"));
+    },
   })
 );
 app.use(express.json());
+
+app.use((req, _res, next) => {
+  // Some serverless adapters forward paths without the /api prefix.
+  if (process.env.VERCEL === "1" && !req.url.startsWith("/api")) {
+    req.url = `/api${req.url}`;
+  }
+  next();
+});
 
 function mapUserRow(row) {
   const bodyWeightKg = row.body_weight_kg === null ? null : Number(row.body_weight_kg);
